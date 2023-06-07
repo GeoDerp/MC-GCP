@@ -1,6 +1,12 @@
 #!/bin/bash
 #This file runs on startup in the VM. It installs scripts used to check container status and shutdown if the container has stopped
 
+#if exists rm 
+sudo rm -f /home/data/containerHealth.sh 
+sudo rm -f /etc/systemd/system/containerTimer.timer
+sudo rm -f /etc/systemd/system/containerService.service
+
+
 #create directory if havent yet 
 mkdir -p /home/data/mc 
 
