@@ -45,9 +45,9 @@ To add these scripts:
 
 ### run.sh
 ---
-Script used on GCP VM on startup to create system services and script to routinely check container health/status. If the container has stopped, the script will run a shutdown command on the VM. This is used for auto shutting down VM on container crash or when autostop is enabled on the container to turn off after a period of minecraft player inactivity (set up by default on the .tf). Autostop has been stup using itzg's [AUTOSTOP feature](https://docker-minecraft-server.readthedocs.io/en/latest/misc/autopause-autostop/autostop/))
+Script used on GCP VM on startup to create system services and script to routinely check container health/status. If the container has stopped, the script will run a shutdown command on the VM. This is used for auto shutting down VM on container crash or when autostop is enabled on the container to turn off after a period of minecraft player inactivity (set up by default on the .tf). Autostop has been stup using itzg's [AUTOSTOP feature](https://docker-minecraft-server.readthedocs.io/en/latest/misc/autopause-autostop/autostop/)
 
-This is designed to reduce costs. But feel free to remove this script via the `startup` on the `metadata` section of the .tf to stop run.sh from running. If you do this I also recommend setting ` restartPolicy: Always` `automatic_restart=true` and remove `AUTOSTOP` from the  container environment variables in the .tf.
+*This is designed to reduce costs. But feel free to remove this script via the `startup` on the `metadata` section of the .tf to stop run.sh from running. If you do this I also recommend setting ` restartPolicy: Always` `automatic_restart=true` and remove `AUTOSTOP` from the  container environment variables in the .tf.*
 
 **Files Generated:**
 - /home/data/containerHealth.sh - used to check docker container health
