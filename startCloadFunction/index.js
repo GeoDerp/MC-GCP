@@ -1,5 +1,5 @@
-const projectId = '<MYPROJECTID> ';
-const zone = 'australia-southeast1-a'
+const projectId = '<MYPROJECTID>';
+const zone = '<REGION>-a'
 const instanceName = 'my-mc-server-1'
 
 const functions = require('@google-cloud/functions-framework');
