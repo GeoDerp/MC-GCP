@@ -58,5 +58,6 @@ Script used on GCP VM on startup to create system services and script to routine
 ---
 - this project is very much in development, so fell free to make an issue or create a pull request for any fixes/improvements to the corresponding code
 - when you stop the VM, you will still generate some costs, the main one being the cost for persistent disk.
+- The .tf file has the minecraft container memory to 6GB, and the VM memory to 8GB (e2-standard-2 being 2vCPUs and 8gb of Memory). feel free to change this but I recommend sticking to the container being 75% of the overall VM memeory.
+- provisioning model is set to "STANDARD". Setting it to "SPOT" will segnificatnly decrease cost, however will increase likleyhood of random server stops as your sharing resources with other Google Services
 - I recommend using the `scp` command to backup your world before doing any major changes. Your world should be stored in `/home/data/mc` on the boot disk. Regular backups is also recommended
-
