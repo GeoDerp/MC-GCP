@@ -1,28 +1,21 @@
-const projectId = '<MYPROJECTID>';
+const project = '<MYPROJECTID>';
 const zone = '<REGION>-a'
-const instanceName = 'my-mc-server-1'
+const instance = 'my-mc-server-1'
 
 const functions = require('@google-cloud/functions-framework');
-const compute = require('@google-cloud/compute');
+const {InstancesClient} = require('@google-cloud/compute')
+const computeClient = new InstancesClient();
 
 //start async function via http/s request
 functions.http('startInstancehttp', (req, res) => {
 
-  const instancesClient = new compute.InstancesClient();
+   const request = {
+      instance,
+      project,
+      zone,
+    };
 
-  const response = instancesClient.start({
-    project: projectId,
-    zone,
-    instance: instanceName,
-  });
-  let operation = response.latestResponse;
-
-  // check if operation is complete.
-  if (operation.status == 'DONE') {
-      console.log('Instance startted.');
-  };
-
-  res.end('ok');
-
-  
+    //start VM
+    const response = await computeClient.start(request);
+    return(res);
 });
