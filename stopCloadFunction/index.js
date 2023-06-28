@@ -8,7 +8,7 @@ const {InstancesClient} = require('@google-cloud/compute')
 const computeClient = new InstancesClient();
 
 //start async function via http/s request
-functions.http('startInstancehttp', (req, res) => {
+functions.http('stopInstancehttp', (req, res) => {
 
    const request = {
       instance,
