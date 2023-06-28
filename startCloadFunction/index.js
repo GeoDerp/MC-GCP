@@ -1,3 +1,4 @@
+// this should not be required if autostop enabled on the container environment variables
 const project = '<MYPROJECTID>';
 const zone = '<REGION>-a'
 const instance = 'my-mc-server-1'
@@ -16,6 +17,6 @@ functions.http('startInstancehttp', (req, res) => {
     };
 
     //start VM
-    const response = await computeClient.start(request);
-    return(res);
+    const response = await computeClient.stop(request);
+    return(response);
 });
