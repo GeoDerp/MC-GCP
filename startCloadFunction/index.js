@@ -1,7 +1,7 @@
-// this should not be required if autostop enabled on the container environment variables
 const project = '<MYPROJECTID>';
-const zone = '<REGION>-a'
-const instance = 'my-mc-server-1'
+const zone = '<ZONE>'
+const instance = 'my-mc-server'
+
 
 const functions = require('@google-cloud/functions-framework');
 const {InstancesClient} = require('@google-cloud/compute')
@@ -10,6 +10,10 @@ const computeClient = new InstancesClient();
 //start async function via http/s request
 functions.http('startInstancehttp', (req, res) => {
 
+    return(startserver());
+});
+
+async function startserver(){
    const request = {
       instance,
       project,
@@ -17,6 +21,6 @@ functions.http('startInstancehttp', (req, res) => {
     };
 
     //start VM
-    const response = await computeClient.stop(request);
-    return(response);
-});
+    const response = await computeClient.start(request);
+    return response;
+}

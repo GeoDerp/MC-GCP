@@ -12,7 +12,7 @@ mkdir -p /home/data/mc
 
 #container check health script 
 echo '#!/bin/bash' >> /home/data/containerHealth.sh 
-echo "containerV=\$(docker ps -a | grep 'itzg/minecraft-server' | cut -d ' ' -f1|tr '\n' ' '); if [ \$(docker inspect -f '{{.State.Running}}' \$containerV) = 'true' ]; then echo up; else sudo init 6; fi;" >> /home/data/containerHealth.sh 
+echo "containerV=\$(docker ps -a | grep 'itzg/minecraft-server' | cut -d ' ' -f1|tr '\n' ' '); if [ \$(docker inspect -f '{{.State.Running}}' \$containerV) = 'true' ]; then echo up; else sudo poweroff; fi;" >> /home/data/containerHealth.sh 
 chmod +x /home/data/containerHealth.sh 
 
 #create timer to check run helth service every 5min
@@ -36,10 +36,11 @@ cat <<EOF > /etc/systemd/system/containerService.service
 Description="Runs Script to check Minecraft Container Health"
 
 [Service]
-ExecStart=/home/data/containerHealth.sh 
+ExecStart=bash /home/data/containerHealth.sh 
 EOF
 
 #enable timer
 sudo systemctl enable containerTimer.timer
+sudo systemctl start containerTimer.timer
 
 
