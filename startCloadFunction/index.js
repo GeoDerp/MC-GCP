@@ -10,7 +10,7 @@ const computeClient = new InstancesClient();
 //start async function via http/s request
 functions.http('startInstancehttp', (req, res) => {
 
-    return(startserver());
+    res.send(startserver());
 });
 
 async function startserver(){
