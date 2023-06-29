@@ -19,7 +19,7 @@ boot_disk_storage = 10
 //KEEP DEFAULTS BELLOW TO ENABLE AUTOSTOP FUNCTION
 container_autostop = "true"
 vm_automatic_restart = "false"
-vm_startupscript =  "mkdir -p /home/data && cd /home/data && git clone https://github.com/GeoDerp/MC-GCP && cd MC-GCP && sleep 5 && chmod +x run.sh && sudo bash ./run.sh"
+vm_startupscript =  "sudo mkdir -p /home/data && sudo chmod -R u=rwx /home/data && cd /home/data && git clone https://github.com/GeoDerp/MC-GCP && cd MC-GCP && sleep 5 && chmod +x run.sh && sudo bash ./run.sh"
 restartPolicy = "Never"
 preemptible = "false"
 persistent_disk_id = "pd-balanced"

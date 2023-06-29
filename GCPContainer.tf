@@ -103,7 +103,7 @@ variable "vm_automatic_restart" {
 
 variable "vm_startupscript" {
   description = "startup script for vm"
-  default = "mkdir -p /home/data && cd /home/data && git clone https://github.com/GeoDerp/MC-GCP && cd MC-GCP && sleep 5 && chmod +x run.sh && sudo bash ./run.sh"
+  default = "sudo mkdir -p /home/data && sudo chmod -R u=rwx /home/data && cd /home/data && git clone https://github.com/GeoDerp/MC-GCP && cd MC-GCP && sleep 5 && chmod +x run.sh && sudo bash ./run.sh"
 }
 
 variable "restartPolicy" {
