@@ -22,7 +22,7 @@ Description=Timer that runs containerHealthRunner.service
 
 [Timer]
 Unit=containerService.service
-OnBootSec=5min
+OnBootSec=20min
 OnCalendar=*:0/5
 Persistent=True
 
