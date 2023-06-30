@@ -34,6 +34,7 @@ END
 cat <<EOF > /etc/systemd/system/containerService.service
 [Unit]
 Description="Runs Script to check Minecraft Container Health"
+After=docker.service
 
 [Service]
 ExecStart=bash /home/data/containerHealth.sh 
