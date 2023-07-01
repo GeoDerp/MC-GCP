@@ -19,6 +19,7 @@ chmod +x /home/data/containerHealth.sh
 cat <<END > /etc/systemd/system/containerTimer.timer
 [Unit]
 Description=Timer that runs containerHealthRunner.service
+After=docker.service
 
 [Timer]
 Unit=containerService.service
