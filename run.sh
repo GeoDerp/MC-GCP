@@ -23,7 +23,7 @@ After=docker.service
 
 [Timer]
 Unit=containerService.service
-OnBootSec=20min
+OnBootSec=5min
 OnCalendar=*:0/5
 Persistent=True
 
