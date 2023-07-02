@@ -1,22 +1,19 @@
 #!/bin/bash
 #This file runs on startup in the VM. It installs scripts used to check container status and shutdown if the container has stopped
 
-#if exists rm 
-sudo rm -f /home/data/containerHealth.sh 
-sudo rm -f /etc/systemd/system/containerTimer.timer
-sudo rm -f /etc/systemd/system/containerService.service
-
-
 #create directory if havent yet 
 mkdir -p /home/data/mc 
 
 #container check health script 
-echo '#!/bin/bash' >> /home/data/containerHealth.sh 
-echo "sudo systemctl stop containerTimer.timer & sudo systemctl disable containerTimer.timer & containerV=\$(docker ps -a | grep 'itzg/minecraft-server' | cut -d ' ' -f1|tr '\n' ' '); if [ \$(docker inspect -f '{{.State.Running}}' \$containerV) = 'true' ]; then echo up; else sudo poweroff; fi;" >> /home/data/containerHealth.sh 
+sudo rm -f /home/data/containerHealth.sh && cat <<END > /home/data/containerHealth.sh 
+#!/bin/bash
+containerV=\$(docker ps -a | grep 'itzg/minecraft-server' | cut -d ' ' -f1|tr '\n' ' ')
+if [ \$(docker inspect -f '{{.State.Running}}' \$containerV) = 'true' ]; then echo up; else sudo systemctl disable containerTimer.timer && sudo poweroff; fi;
+END
 chmod +x /home/data/containerHealth.sh 
 
 #create timer to check run helth service every 5min
-cat <<END > /etc/systemd/system/containerTimer.timer
+sudo rm -f /etc/systemd/system/containerTimer.timer && cat <<END > /etc/systemd/system/containerTimer.timer
 [Unit]
 Description=Timer that runs containerHealthRunner.service
 After=docker.service
@@ -32,7 +29,7 @@ WantedBy=multi-user.target
 END
 
 #create service to run health script
-cat <<EOF > /etc/systemd/system/containerService.service
+sudo rm -f /etc/systemd/system/containerService.service && cat <<EOF > /etc/systemd/system/containerService.service
 [Unit]
 Description="Runs Script to check Minecraft Container Health"
 After=docker.service
