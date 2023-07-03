@@ -153,7 +153,7 @@ resource "google_compute_instance" "my-mc-server" {
   machine_type = var.machine_type
 
   metadata = {
-    gce-container-declaration = "spec:\n  containers:\n  - name: my-mc-server\n    image: docker.io/itzg/minecraft-server\n    env:\n    - name: EULA\n      value: ${var.EULA}\n    - name: ENABLE_AUTOSTOP\n      value: ${var.container_autostop}\n    - name: MEMORY\n      value: ${var.java_memory}\n    - name: OPS\n      value: ${var.ops}\n    - name: TYPE\n      ${var.container_extraENVs}    volumeMounts:\n    - name: host-path-0\n      readOnly: false\n      mountPath: /data\n    securityContext:\n      privileged: true\n    stdin: true\n    tty: true\n  volumes:\n  - name: host-path-0\n    hostPath:\n      path: /home/data/mc\n  restartPolicy: ${var.restartPolicy}\n"
+    gce-container-declaration = "spec:\n  containers:\n  - name: my-mc-server\n    image: docker.io/itzg/minecraft-server\n    env:\n    - name: EULA\n      value: ${var.EULA}\n    - name: ENABLE_AUTOSTOP\n      value: ${var.container_autostop}\n    - name: MEMORY\n      value: ${var.java_memory}\n    - name: OPS\n      value: ${var.ops}\n    - name: TYPE\n      ${var.container_extraENVs}    volumeMounts:\n    - name: host-path-0\n      readOnly: false\n      mountPath: /data\n    securityContext:\n      privileged: false\n    stdin: true\n    tty: true\n  volumes:\n  - name: host-path-0\n    hostPath:\n      path: /home/data/mc\n  restartPolicy: ${var.restartPolicy}\n"
     google-logging-enabled    = var.google-logging-enabled
     startup-script            = var.vm_startupscript
   }
@@ -188,6 +188,7 @@ resource "google_compute_instance" "my-mc-server" {
     enable_vtpm                 = true
   }
 
+  tags = ["mc-server"]
   zone = var.zone_id
   project = var.project_id
 }
@@ -201,30 +202,22 @@ resource "google_compute_address" "default" {
 
 #create firewall rules 
 resource "google_compute_firewall" "rules" {
-  name        = "tcp-mc-server-port-rule"
-  network     = "default"
+  name    = "tcp-mc-server-port-rule"
+  network = "default"
   description = "opens mc server port tcp"
   project = var.project_id
 
   allow {
     protocol = "tcp"
-    ports    = ["25565", "25565"]
+    ports    = ["25565"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+# optional udp
+#  allow {
+#    protocol = "udp"
+#    ports    = ["25565","25567"]
+#  }
+
+  source_tags = ["mc-server"]
+  #source_ranges = ["0.0.0.0/0"]
 }
-
-# create udp firewall rules (optional)
-# resource "google_compute_firewall" "rules" {
-#   name        = "udp-mc-server-port-rule"
-#   network     = "default"
-#   description = "opens mc server port udp"
-#   project = var.project_id
-
-#   allow {
-#     protocol = "udp"
-#     ports    = ["25565", "25565"]
-#   }
-
-#   source_ranges = ["0.0.0.0/0"]
-# }
