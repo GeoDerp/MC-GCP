@@ -5,7 +5,10 @@
 mkdir -p /home/data/mc 
 
 #container check health script 
-sudo rm -f /home/data/containerHealth.sh && cat <<END > /home/data/containerHealth.sh 
+if [ \$(docker inspect -f '{{.State.Running}}' \$containerV) = 'true' ]; 
+then
+sudo rm -f /home/data/containerHealth.sh
+cat <<END > /home/data/containerHealth.sh 
 #!/bin/bash
 containerV=\$(docker ps -a | grep 'itzg/minecraft-server' | cut -d ' ' -f1|tr '\n' ' ')
 if [ \$(docker inspect -f '{{.State.Running}}' \$containerV) = 'true' ]; then echo up; else sudo systemctl disable containerTimer.timer && sudo poweroff; fi;
@@ -42,4 +45,6 @@ EOF
 sudo systemctl enable containerTimer.timer
 sudo systemctl start containerTimer.timer
 
-
+# if script could not find container
+else echo "could not find container"
+fi
